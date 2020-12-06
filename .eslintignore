@@ -1,6 +1,9 @@
 bin
+dist
 client/thirdparty-js
 node_modules
 package-lock.json
 package.json
 public
+**/*.d.ts
+coverage/

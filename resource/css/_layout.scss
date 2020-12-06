@@ -1,79 +1,162 @@
 .crowi { // {{{
-  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 500;
-  }
-
   &.main-container { // {{{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    border-top: solid $crowiTopBorderHeight $crowiHeaderBackground;
+    border-image: linear-gradient(90deg,
+      $crowiHeaderBackground,
+      lighten(saturate(adjust-hue($crowiHeaderBackground, -60deg), 25%), 30%),
+      lighten(saturate(adjust-hue($crowiHeaderBackground, 25deg), 25%), 40%),
+      lighten($crowiHeaderBackground, 40%)
+    ) 3;
 
-    .crowi-header { // {{{
+    .v2-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    // TODO: move those kind of logic to components and styled-component
+    // sm menu opened
+    @include media-breakpoint-down(sm) {
+      &.navigation-drawer-open {
+        max-height: 100vh;
+        overflow: hidden;
+      }
+    }
+
+    .v2-crowi-header { // {{{
       z-index: 1040;
-      background: $crowiHeaderBackground;
+      box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.4);
+      background: #fff;
       height: $crowiHeaderHeight;
-      border-radius: 0;
-      border: none;
-      margin-bottom: 0;
+      color: #333;
+      padding: 0;
 
-      box-shadow: 0 3px 10px 0px rgba(0,0,0,.3);
+      .crowi-navbar-brand {
+        @include media-breakpoint-down(sm) {
+          display: none;
+        }
+      }
 
-      .navbar-brand {
-        font-weight: bold;
+      .crowi-menu-main {
+        display: flex;
+        flex: 1;
+      }
+      @include media-breakpoint-down(sm) {
+        .crowi-menu-sm { // for moblie
+          display: flex;
+          align-items: center;
+          margin-left: 1rem;
+          margin-right: 1rem;
+          > a {
+            font-size: 1.1rem;
+            cursor: pointer;
+          }
+        }
+        .crowi-menu-md { // for pc
+          display: none;
+        }
+      }
+      @include media-breakpoint-up(md) {
+        .crowi-menu-sm { // for moblie
+          display: none;
+        }
+        .crowi-menu-md { // for pc
+          display: flex;
+        }
+      }
+
+      .crowi-navbar-brand {
+        margin-left: 1rem;
+        font-weight: 600;
         img {
-          display: inline;
           margin-right: 8px;
         }
       }
-      .navbar-collapse {
-        background: $crowiHeaderBackground;
+
+      .navbar-nav {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        color: $primary;
       }
 
-      > div > .navbar-nav li button {
-        margin: 10px;
-      }
-
-      > div > a ,
-      > div > ul > li > a {
-        color: #ccc;
-        &:hover {
-          color: #aaa;
-        }
+      .nav-divider {
+        border-right: solid 1px #ccc;
+        margin-right: 10px;
+        margin-left: 20px;
+        height: 30px;
+        margin-top: 6px;
       }
 
       .confidential {
         a {
-          border: solid 2px #f00;
-          background: #fff;
+          display: inline-block;
+          border: dotted 1px #f00;
           color: #f00;
           font-weight: bold;
-          height: 42px;
-          margin-top: 5px;
-          padding: 10px;
-          margin-right: 5px;
+          padding: 7px;
         }
       }
 
-      .navbar-toggle {
-        position: absolute;
-        top: 0;
-        right: 0;
+      .dropdown-menu {
+        border: none;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 8px 20px rgba(0, 0, 0, 0.2);
       }
-      .navbar-collapse.collapse.in {
 
-        .confidential {
+      .header-user {
+        .dropdown-item:active {
+          background: inherit;
+          color: inherit;
         }
-      }
+        .dropdown-toggle::after {
+          // don't show caret
+          display: none;
+        }
+        .dropdown-item {
+          a {
+            display: block;
+          }
+        }
 
+        .dropdown-menu-right {
+          .picture {
+            width: 48px;
+            height: 48px;
+          }
+
+          .header-user-name {
+            font-weight: 600;
+          }
+          .header-user-username, .header-user-email, .header-user-socialid {
+            color: #777;
+          }
+        }
+
+      }
     } // }}}
 
+    .v2-contents-container {
+      flex: 1;
+      display: flex;
+    }
+  } // }}}
+} // }}}
+
+.crowi { // {{{
+  &.main-container { // {{{
     .main {
       padding: 0; // cancel bootstrap padding
 
       .header-wrap {
-        padding: 16px 16px 0 16px;
+        padding: 1em 1em 0 1em;
       }
 
       .content-main {
-        padding: 16px;
+        padding: 1em;
       }
     }
 
@@ -101,6 +184,10 @@
         text-decoration: none;
         cursor: pointer;
       }
+
+      @include media-breakpoint-down(sm) {
+        display: none;
+      }
     } // }}}
 
     .page-list {
@@ -115,22 +202,74 @@
   } // }}}
 } // }}}
 
-
-.crowi.single { // {{{
-} // }}}
+@keyframes LoginScreenBackgroundGradients {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
 
 .crowi.single.nologin { // {{{
-  //background: lighten($crowiHeaderBackground, 15%);
-  background: $crowiHeaderBackground;
+  background: lighten($crowiHeaderBackground, 15%);
+  background:
+    linear-gradient(215deg,
+      lighten($crowiHeaderBackground, 30%),
+      lighten(saturate(adjust-hue($crowiHeaderBackground, 15deg), 25%), 10%),
+      $crowiHeaderBackground
+    ),
+    linear-gradient(135deg,
+      $crowiHeaderBackground,
+      lighten(saturate(adjust-hue($crowiHeaderBackground, 15deg), 25%), 50%),
+      lighten($crowiHeaderBackground, 20%)
+    ),
+    linear-gradient(335deg,
+      lighten($crowiHeaderBackground, 60%),
+      $crowiHeaderBackground,
+      lighten(saturate(adjust-hue($crowiHeaderBackground, 10deg), 20%), 30%)
+    )
+  ;
+  border-image: none;
+  border-top: none;
+  background-size: 100% 100%;
+  @include media-breakpoint-up(md) {
+    animation: LoginScreenBackgroundGradients 20s linear infinite;
+    background-size: 200% 200%;
+
+    @media (max-height: 823px) {
+      animation: none;
+    }
+  }
+
+  .v2-contents-container {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .v2-single-page-container {
+    padding: 2em;
+    margin-top: calc(-66px - 2em);
+    @media (max-height: 823px) {
+      margin-top: 0;
+      h1.register-page {
+        display: none;
+      }
+    }
+
+    @include media-breakpoint-up(md) {
+      width: 560px;
+    }
+    @include media-breakpoint-down(sm) {
+      padding: 1em;
+      width: 100%;
+    }
+  }
 
   .installer-header {
-    margin-top: 100px;
     text-align: center;
 
     h1 {
       margin: 40px 0 40px;
       color: #fff;
-      font-size: 1.6em;
+      font-size: 1.2em;
     }
   }
 
@@ -140,96 +279,75 @@
   }
 
   h1.login-page {
-    margin-top: 80px;
     color: #fff;
     font-size: 1.6em;
     padding: 10px;
+    margin-bottom: 2em;
     text-align: center;
-    text-shadow: 0px 0px 6px rgba(0,0,0,.5);
+    text-shadow: 0px 1px 8px rgba(0,0,0,.2);
     line-height: 100%;
   }
 
 
-  .login-dialog-container {
+  .login-dialog {
+    position: relative;
+    padding: 2em;
+    background: #fff;
+    box-shadow: 0 1px 40px 0 rgba(0,0,0,0.3);
+    border-radius: 3px;
 
-    margin: 40px auto;
-    float: none;
-
-    .login-dialog {
-      position: relative;
-
-      form {
-        margin-top: 10px;
-        .input-group {
-          margin-bottom: 10px;
-        }
-      }
-
-      .login-dialog-inner, .register-dialog-inner {
-        top: 0;
-        left: 0;
-        padding: 42px 48px;
-        background: #fff;
-        position: absolute;
-        margin-bottom: 40px;
-        width: 100%;
-
-        box-shadow: 0 1px 40px 0 rgba(0,0,0,0.3);
-        border-radius: 3px;
-
-        h2 {
-          margin: 0 0 28px;
-          font-size: 1.3em;
-          text-align: center;
-        }
-      }
-
-      p.bottom-text {
-        text-align: right;
-        margin: 20px 0 0;
+    form {
+      margin-top: 10px;
+      .input-group {
+        margin-bottom: 10px;
       }
     }
 
+
+    h2 {
+      margin: 0 0 28px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    p.bottom-text {
+      text-align: right;
+      margin: 20px 0 0;
+    }
   }
 
 
 } // }}}
 
-@media (max-width: $screen-sm-max) { // {{{
-} // }}}
-
-@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { // {{{ tablet size
-  .crowi.main-container { // {{{
+// Tablet
+@include media-breakpoint-only(sm) {
+  .crowi.main-container {
     .main {
-      article header {
-        .bookmark-link {
-          font-size: 1.3em;
-        }
-        h1 {
-          font-size: 1.4em;
-          margin-bottom: 0;
-        }
-
-        &.affix {
+      article  {
+        .header-wrap.sps--blw {
           width: 100%;
         }
+
+        header {
+          .bookmark-link {
+            font-size: 1.3em;
+          }
+          h1 {
+            font-size: 1.4em;
+            margin-bottom: 0;
+          }
+        }
       }
     }
   }
-} // }}}
+}
 
-@media (max-width: $screen-xs-max) { // {{{ iPhone size
-  .crowi.main-container { // {{{
+// Smartphone
+@include media-breakpoint-only(xs) {
+  .crowi.main-container {
     .main {
-      article header {
-        .bookmark-link {
-          font-size: 1em;
-        }
-        h1 {
-          font-size: 1.1em;
-        }
-
-        &.affix {
+      article {
+        .header-wrap.sps--blw {
           h1 {
             font-size: 1.1em;
           }
@@ -242,13 +360,30 @@
             right: 20px;
           }
         }
+
+        header {
+          .bookmark-link {
+            font-size: 1em;
+          }
+          h1 {
+            font-size: 1.1em;
+          }
+        }
       }
     }
   }
 }
 
-@media print { // {{{ printable style
-  .crowi.main-container { // {{{
+// smartphone input size adjustment
+@include media-breakpoint-down(md) {
+  input[type=password], input[type=text], textarea {
+    font-size: 1rem !important;
+  }
+}
+
+// {{{ printable style
+@media print {
+  .crowi.main-container {
     padding: 30px;
 
     a:after {
@@ -287,8 +422,6 @@
         margin-top: 32px;
         color: #666;
       }
-
-
     }
   }
 } // }}}

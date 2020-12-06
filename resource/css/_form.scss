@@ -11,7 +11,6 @@
 
   .nav {
     margin-top: 8px;
-    height: 40px;
   }
 
   .tab-content {
@@ -57,6 +56,7 @@
           border: none;
           box-shadow: none;
           resize: none;
+          word-break: break-all;
 
           &.dragover {
             border: dashed 6px #ccc;
@@ -108,6 +108,27 @@
   }
 } // }}}
 
+.crowi.main-container .main .content-main.content-form {
+  h1, h2, h3,
+  fieldset > legend {
+    &:not(.modal-title):not(.dropdown-header) {
+      padding-left: 0.5rem;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid $border-color;
+    }
+  }
+
+  fieldset > fieldset > legend {
+    &:not(.modal-title):not(.dropdown-header) {
+      font-size: 1.3rem;
+      border: none;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+}
+
 .crowi.main-container .main .page-list.content-main { // {{{ Edit Form of Page List
 
   .close-button {
@@ -146,8 +167,8 @@ input:-moz-placeholder {
   color: #ccc;
 }
 
-@media (max-width: $screen-sm-max) { // {{{ less than tablet size
-
+// Smartphone and Tablet
+@include media-breakpoint-down(sm) {
   .content-main.on-edit {
     .form-group.form-submit-group {
       select.form-control {
@@ -156,11 +177,11 @@ input:-moz-placeholder {
       }
     }
   }
+}
 
-} // }}}
-
-@media (max-width: $screen-xs-max) { // {{{ less than smartphone size
+// Smartphone
+@include media-breakpoint-down(xs) {
   #edit-form-submit {
     float: right;
   }
-} // }}}
+}

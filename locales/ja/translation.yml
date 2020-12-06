@@ -6,6 +6,10 @@ Moved: 移動しました
 Move pages under: '%s 以下を移動'
 Unlinked: リダイレクト削除
 'Like!': いいね！
+Notification: 通知
+Notifications: 通知一覧
+Watch: ウォッチする
+Watching: ウォッチ中
 Seen by: 見た人
 Cancel: キャンセル
 Create: 作成
@@ -13,9 +17,13 @@ Admin: 管理
 New: 作成
 Update: 更新
 Update Page: ページを更新
+Submit: 送信
+Save: 保存
+Add: 追加
 Warning: 注意
 List View: リスト表示
 Timeline View: タイムライン表示
+Recently Viewed Pages: 最近閲覧したページ
 Presentation Mode: プレゼンモード
 Created: 作成日
 Last updated: 最終更新
@@ -50,7 +58,7 @@ Memo: メモ
 Input page name: ページ名を入力
 Input page name (optional): ページ名を入力(空欄OK)
 New Page: 新規ページ
-Create under: '<code>%s</code>以下に作成'
+Create under: '<1>{{ path }}</1>以下に作成'
 Table of Contents: 目次
 Public: 公開
 Anyone with the link: リンクを知っている人のみ
@@ -60,6 +68,8 @@ Shareable link: このページの共有用URL
 Show latest: 最新のページを表示
 Load latest: 最新版を読み込む
 edited this page: さんがこのページを編集しました。
+Bookmarks: ブックマーク
+Created Pages: 作成したページ
 Deleted Pages: 削除済みページ
 Sign out: ログアウト
 page_login:
@@ -67,7 +77,7 @@ page_login:
   sign_up_is_here: 新規登録はこちら
   sign_in_with: '%s でログイン'
   notice:
-    email_is_used: "このメールアドレス({{ email }})は既に使用されていますが、{{ issuer }}と接続されていません。"
+    email_is_used: 'このメールアドレス({{ email }})は既に使用されていますが、{{ issuer }}と接続されていません。'
     login_to_connect: ログインすることで{{ issuer }}のアカウントと接続することができます。
 page_register:
   example: 例
@@ -122,7 +132,7 @@ Current password: 現在のパスワード
 New password: 新しいパスワード
 Re-enter new password: (確認用)
 Please set a password: パスワードを設定してください
-You can sign in with email and password: '<code>%s</code> と設定されたパスワードの組み合わせでログイン可能になります。'
+You can sign in with email and password: '<1>{{ email }}</1> と設定されたパスワードの組み合わせでログイン可能になります。'
 API Settings: API設定
 API Token Settings: API Token設定
 Current API Token: 現在のAPI Token
@@ -219,8 +229,184 @@ search:
     results: '{{value}} 件'
 
 admin:
+  top:
+    title: Wiki管理
+    description: この画面はWiki管理者のみがアクセスできる画面です。
+    appoint_admin: 「ユーザー管理」から「管理者にする」ボタンを使ってユーザーをWiki管理者に任命することができます。
+  navigation:
+    top: Wiki 管理トップ
+    title: Wiki 管理
+    app: アプリ設定
+    notification: 通知設定
+    users: ユーザー管理
+    search: 検索管理
+    share: 外部共有設定  
+    backlinks: バックリンク管理
+  app:
+    legend: アプリ設定
+    title: Wikiの名前
+    title_description: ヘッダーやHTMLタイトルに使用されるWikiの名前を変更できます。
+    confidential: コンフィデンシャル表示
+    confidential_placeholder: '例: 社外秘'
+    confidential_description: ここに入力した内容は、ヘッダー等に表示されます。
+    allow_upload_file: 画像以外のファイルアップロードを許可
+    allow_upload_file_description1: ファイルアップロードの設定を有効にしている場合にのみ、選択可能です。
+    allow_upload_file_description2: 許可をしている場合、画像以外のファイルをページに添付可能になります。
+  aws:
+    legend: AWS 設定
+    tips1: AWS にアクセスするための設定を行います。AWS の設定を完了させると、ファイルアップロード機能、プロフィール写真機能などが有効になります。
+    tips2: また、SMTP の設定が無い場合、SES を利用したメール送信が行われます。FromメールアドレスのVerify、プロダクション利用設定をする必要があります。
+    notice: この設定を途中で変更すると、これまでにアップロードしたファイル等へのアクセスができなくなりますのでご注意下さい。
+    region: リージョン
+    region_placeholder: '例: ap-northeast-1'
+    bucket: バケット名
+    bucket_placeholder: '例: crowi'
+    access_key_id: Access Key ID
+    secret_access_key: Secret Access Key
+  github:
+    legend: GitHub 設定
+    tips1: GitHub プロジェクトの設定をすると、GitHub アカウントにコネクトして登録やログインが可能になります。
+    tips2: また、Organizationを指定した場合は、その組織に所属するアカウントのみがコネクトできるようになります。
+    client_id: Client ID
+    client_secret: Client Secret
+    organization: Organization
+  google:
+    legend: Google 設定
+    tips: Google プロジェクトの設定をすると、Google アカウントにコネクトして登録やログインが可能になります。
+    client_id: Client ID
+    client_secret: Client Secret
+  mail:
+    legend: メールの設定
+    tips1: SMTPの設定がされている場合、それが利用されます。SMTP設定がなく、AWSの設定がある場合、SESでの送信を試みます。
+    tips2: どちらの設定もない場合、メールは送信されません。
+    from: Fromアドレス
+    from_placeholder: '例: mail@crowi.wiki'
+    smtp:
+      legend: SMTP設定
+      host: ホスト
+      port: ポート
+      user: ユーザー
+      password: パスワード
+    aws:
+      legend: AWS設定
+      region: リージョン
+      access_key_id: Access Key ID
+      secret_access_key: Secret Access Key
+  security:
+    legend: セキュリティ設定
+    basic_auth: Basic認証
+    id: ID
+    password: パスワード
+    tips1: Basic認証を設定すると、ページ全体に共通の認証がかかります。
+    tips2: IDとパスワードは暗号化されずに送信されるのでご注意下さい。
+    restriction: 登録の制限
+    registration:
+      mode:
+        label:
+          open: '公開（誰でも登録可能）'
+          restricted: '制限（登録完了には管理者の承認が必要）'
+          closed: '非公開（登録には管理者による招待が必要）'
+    restriction_description: ここに入力した内容は、ヘッダー等に表示されます。
+    whitelist: 登録許可メールアドレスのホワイトリスト
+    whitelist_placeholder: '例: mail@crowi.wiki'
+    whitelist_description1: 登録可能なメールアドレスを制限することができます。例えば、会社で使う場合、<1>@crowi.wiki</1>などと記載すると、その会社のメールアドレスを持っている人のみ登録可能になります。
+    whitelist_description2: 1行に1メールアドレス入力してください。
+  backlink:
+    legend: バックリンク構築
+    build: Build Now
+    build_description1: Force rebuild backlinks.
+    build_description2: Click "Build Now" to delete all backlinks and create backlinks by all pages.
+    build_description3: This may take a while.
+  notification:
+    settings:
+      legend: Slack アプリ 設定
+      client_id: Client ID
+      client_secret: Client Secret
+    patterns:
+      legend: デフォルトの通知パターンの設定
+      pattern: Pattern
+      channel: Channel
+      operation: Operation
+      path_pattern_description: Path name of wiki. Pattern expression with <1>*</1> can be used.
+      channel_description: Slack channel name. Without <1>#</1>.
+    instructions:
+      basic:
+        legend: How to configure Slack app for Crowi
+        description: Register Crowi as a Slack application, the notification feature for Slack can be enabled.
+        steps:
+          - title: 1. Register Slack App
+            description: 'Create App from <1>this link</1>, and fill the form out as below:'
+          - title: 2. Get <1>clientId</1> and <3>clientSecret</3>
+          - title: 3. After <1>clientId</1> and <3>clientSecret</3> set, click "Connect to Slack" button to start OAuth process.
+            description: Click "Connect to Slack" button to start OAuth process.
+          - title: 4. Configure Slack on this notification setting screen
+        unfurl:
+          legend: How to enable unfurling links feature
+          steps:
+            - title: 1. Subscribe events from Slack
+              description: 'Fill the form in <1>Features > Event Subscriptions</1> out as below:'
+  search:
+    legend: インデックス構築
+    build: Build Now
+    build_description1: Force rebuild index.
+    build_description2: Click "Build Now" to delete all backlinks and create backlinks by all pages.
+    build_description3: This may take a while.
   share:
-    enable_external_share: 'Wikiページの外部ユーザーへの共有を有効にする。'
+    legend: 外部共有設定
+    enable_external_share: Wikiページの外部ユーザーへの共有を有効にする。
+  user:
+    legend: ユーザー一覧
+    user_id: ユーザーID
+    name: 名前
+    email: メールアドレス
+    created_at: 作成日
+    status: ステータス
+    operation: 操作
+    not_found: ユーザーが見つかりませんでした
+    invite:
+      form:
+        collapse: 新規ユーザーの招待
+        email: メールアドレス
+        example: '例: user@crowi.wiki'
+        description: 複数行入力で複数人を招待可能
+        checkbox: 招待をメールで送信
+        submit: 招待する
+      modal:
+        completed_message: ユーザーを招待しました
+        temp_password: 作成したユーザーは仮パスワードが設定されています。
+        caution_password: 仮パスワードはこの画面を閉じると二度と表示できませんのでご注意ください。
+        caution_without_email: 招待メールを送っていない場合、この画面で必ず仮パスワードをコピーし、招待者へ連絡してください。
+        email: メールアドレス
+        password: パスワード
+        failed_message: 作成失敗
+    reset_password:
+      modal:
+        ask: パスワードを新規発行しますか?
+        caution: 新規発行したパスワードはこの画面を閉じると二度と表示できませんのでご注意ください。
+        after_reset: 新規発行したパスワードを、対象ユーザーへ連絡してください。
+        submit: 実行
+    edit:
+      modal:
+        ask: ユーザー情報を編集しますか？
+        current_name: 現在の名前
+        current_email: 現在のメールアドレス
+        new_name: 新しい名前を入力してください
+        new_email: 新しいメールアドレスを入力してください
+        submit: 実行 
+      dropdown:
+        edit: 編集
+        edit_menu: 編集メニュー
+        reset_password: パスワードの再発行
+        status: ステータス
+        approve: 承認する
+        suspend: アカウント停止
+        restore: 元に戻す
+        delete: 削除する
+        delete_completely: 完全に削除する
+        admin_menu: 管理者メニュー
+        remove_admin: 管理者から外す 
+        remove_caution: 自分自身を管理者から外すことはできません。
+        make_admin: 管理者にする
 
 Portalize: ポータル化
 portalize:

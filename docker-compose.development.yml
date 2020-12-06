@@ -10,14 +10,16 @@ services:
       DEBUG: "crowi:*"
       MONGO_URI: mongodb://mongodb:27017/crowi
       REDIS_URL: redis://redis:6379/crowi
-      ELASTICSEARCH_URI: elasticsearch:9200/
+      ELASTICSEARCH_URI: http://elasticsearch:9200/
       PLANTUML_URI: //localhost:8080
       FILE_UPLOAD: local
     volumes:
       - ./:/crowi
       - /crowi/node_modules
+      - /root/.mongo-binaries
     ports:
       - 3000:3000
+      - 6001:6001
     links:
       - mongodb
       - elasticsearch
@@ -26,7 +28,7 @@ services:
     command: bash -c "npm install && npm run dev"
 
   mongodb:
-    image: mongo:3.6.3
+    image: mongo:3.6.13
     volumes:
       - ./data/mongodb:/data/db
     restart: unless-stopped
